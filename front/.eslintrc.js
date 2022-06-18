@@ -2,6 +2,7 @@ module.exports = {
   env: {jest: true},
   root: true,
   parser: '@babel/eslint-parser',
+  parserOptions: {project: './tsconfig.json'},
   extends: [
     'eslint:recommended',
     '@react-native-community',
