@@ -1,8 +1,7 @@
 module.exports = {
   env: {jest: true},
   root: true,
-  parser: '@babel/eslint-parser',
-  parserOptions: {project: './tsconfig.json'},
+  parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
     '@react-native-community',
@@ -33,6 +32,9 @@ module.exports = {
       'error',
       {functions: true, classes: true, variables: false},
     ],
+    'prettier/prettier': ['error', {endOfLine: 'auto'}],
+    'no-useless-escape': 'off',
+    'react/require-default-props': 'off',
   },
   settings: {
     'import/resolver': {
