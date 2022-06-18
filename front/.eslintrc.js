@@ -1,4 +1,5 @@
 module.exports = {
+  env: {jest: true},
   root: true,
   parser: '@babel/eslint-parser',
   extends: [
@@ -22,16 +23,11 @@ module.exports = {
     ],
     'react/function-component-definition': [
       2,
-      {
-        namedComponents: 'arrow-function',
-        unnamedComponents: 'arrow-function',
-      },
+      {namedComponents: 'arrow-function', unnamedComponents: 'arrow-function'},
     ],
-    'prettier/prettier': ['error'],
     'react/jsx-props-no-spreading': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error'],
-
     'no-use-before-define': [
       'error',
       {functions: true, classes: true, variables: false},
