@@ -8,13 +8,12 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface DismissKeyboardViewProps {
-  children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
 }
 
 const DismissKeyboardHOC =
-  (Comp: typeof KeyboardAwareScrollView): React.FC<DismissKeyboardViewProps> =>
-  ({children, ...props}: DismissKeyboardViewProps) =>
+  (Comp: typeof KeyboardAwareScrollView): ReactFCC<DismissKeyboardViewProps> =>
+  ({children, ...props}) =>
     (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Comp {...props} style={props.style}>

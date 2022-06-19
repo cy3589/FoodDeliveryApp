@@ -1,6 +1,7 @@
 module.exports = {
   env: {jest: true},
   root: true,
+  globals: {ReactFCC: 'readonly'},
   parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
@@ -35,6 +36,7 @@ module.exports = {
     'prettier/prettier': ['error', {endOfLine: 'auto'}],
     'no-useless-escape': 'off',
     'react/require-default-props': 'off',
+    'react/prop-types': 0,
   },
   settings: {
     'import/resolver': {
