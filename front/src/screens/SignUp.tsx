@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Platform,
   Pressable,
@@ -8,20 +9,23 @@ import {
   TextInput,
   View,
 } from 'react-native';
-// import {NativeStackScreenProps} from '@react-navigation/native-stack';
-// import {RootStackParamList} from '@/App';
+import axios, {AxiosError} from 'axios';
+import Config from 'react-native-config';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {RootStackParamList} from '@/AppInner';
 import DismissKeyboardView from '@/components/DismissKeyBoardView';
 
-// type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
+type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUp'>;
 
-// const SignUp = ({navigation}: SignUpScreenProps) => {
-const SignUp = () => {
+const SignUp = ({navigation}: SignUpScreenProps) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const emailRef = useRef<TextInput | null>(null);
   const nameRef = useRef<TextInput | null>(null);
   const passwordRef = useRef<TextInput | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeEmail = useCallback(text => {
     setEmail(text.trim());
@@ -32,16 +36,19 @@ const SignUp = () => {
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
   }, []);
-  const onSubmit = useCallback(() => {
-    if (!email || !email.trim()) {
+  const onSubmit = useCallback(async () => {
+    console.log(Config.API_URL);
+    console.log(Config);
+    if (isLoading) return null;
+    if (!email || !email.trim())
       return Alert.alert('알림', '이메일을 입력해주세요.');
-    }
-    if (!name || !name.trim()) {
+
+    if (!name || !name.trim())
       return Alert.alert('알림', '이름을 입력해주세요.');
-    }
-    if (!password || !password.trim()) {
+
+    if (!password || !password.trim())
       return Alert.alert('알림', '비밀번호를 입력해주세요.');
-    }
+
     if (
       !/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test(
         email,
@@ -54,10 +61,29 @@ const SignUp = () => {
         '알림',
         '비밀번호는 영문,숫자,특수문자($@^!%*#?&)를 모두 포함하여 8자 이상 입력해야합니다.',
       );
-
+    // try {
+    //   setIsLoading(true);
+    //   await axios.post(`${Config.API_URL}/user`, {email, name, password});
+    //   console.log(Config.API_URL);
+    //   // const response = await axios.post(`${Config.API_URL}/user`, {
+    //   //   email,
+    //   //   name,
+    //   //   password,
+    //   // });
+    //   // console.log(response.data);
+    //   Alert.alert('알림', '회원가입 되었습니다.');
+    //   navigation.navigate('SignIn');
+    // } catch (error) {
+    //   const errorResponse = (error as unknown as AxiosError).response;
+    //   // console.error(errorResponse);
+    //   if (errorResponse)
+    //     Alert.alert('알림', (errorResponse.data as {message: string}).message);
+    // } finally {
+    //   setIsLoading(false);
+    // }
     // console.log(email, name, password);
     return Alert.alert('알림', '회원가입 되었습니다.');
-  }, [email, name, password]);
+  }, [email, isLoading, name, navigation, password]);
 
   const canGoNext = useMemo(
     () => email && name && password,
@@ -121,9 +147,13 @@ const SignUp = () => {
               ? StyleSheet.compose(styles.loginButton, styles.loginButtonActive)
               : styles.loginButton
           }
-          disabled={!canGoNext}
+          disabled={!canGoNext || isLoading}
           onPress={onSubmit}>
-          <Text style={styles.loginButtonText}>회원가입</Text>
+          {isLoading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={styles.loginButtonText}>회원가입</Text>
+          )}
         </Pressable>
       </View>
     </DismissKeyboardView>

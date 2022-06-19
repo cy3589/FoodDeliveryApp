@@ -37,6 +37,7 @@ module.exports = {
     'no-useless-escape': 'off',
     'react/require-default-props': 'off',
     'react/prop-types': 0,
+    'import/no-extraneous-dependencies': 0,
   },
   settings: {
     'import/resolver': {
